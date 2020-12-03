@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<!-- Import Data Dialog with Wait for Add more data -->
+<link rel="stylesheet" href="static/css/import.css">
+
+<!-- Import Data Page with three tabs: Upload, URL, Cloud Storage -->
 
 <div class="ui container" id="import-tasks">
+  <!-- New style of headers -->
+  <header class="title">
+    <img src="static/images/heartex_icon_opossum_green@2x.png" style="margin-bottom: 15px" width="100px">
+    <h1>Import data</h1>
+  </header>
 
   <!-- Dimmer and loader -->
   <div class="ui page dimmer">
@@ -15,20 +22,32 @@
     <input id="file-input" type="file" name="file" multiple onchange="send_data(event)" style="display: none"/>
 
     <div class="ui content">
-      <div id="holder">
-        <div class="text">
-          <i class="ui icon huge upload"></i>
-          <p>Drag and drop your files here or click for import</p>
+      <div id="holder" class="dropzone">
+        <div class="content">
+          <header>Drag & drop files here<br/>or click to browse</header>
+          <img src="static/images/upload@2x.png" class="icon" />
+          <dl>
+            <dt>Text</dt><dd>txt</dd>
+            <dt>Audio</dt><dd>wav, mp3, m4a, ogg</dd>
+            <dt>Images</dt><dd>jpg, png, gif, bmp, svg, webp</dd>
+            <dt>HTML</dt><dd>html, htm, xml</dd>
+            <dt>Time Series</dt><dd>csv, tsv</dd>
+            <dt>Common Formats</dt><dd>csv, tsv, txt, json</dd>
+          </dl>
         </div>
       </div>
     </div>
 
+    <p class="center">
+      To import already preannoted data check out the
+      <a href="https://labelstud.io/guide/tasks.html">Documentation</a>
+    </p>
   </div>
   <br>
 
   <!-- URL: Use iframe and form to enable autocomplete for URL input -->
   <iframe name="my_iframe" src="about:blank" hidden></iframe>
-  <form target="my_iframe" action="about:blank" method="get">
+  <form target="my_iframe" action="about:blank" method="get" hidden>
 
     <div class="ui form">
       <label for="url-input" class="description">Or paste a file URL or task in JSON format here</label><br/>
@@ -45,7 +64,7 @@
 
   <!-- Help message -->
   <div class="ui divider hidden"></div>
-  <div class="ui" style="display: block !important;">
+  <div class="ui" hidden>
     {% include "includes/import_help.html" %}
   </div>
 
