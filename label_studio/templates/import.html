@@ -17,8 +17,17 @@
     <div class="ui large text loader orange">Importing in progress ...</div>
   </div>
 
+  <div class="source-switch">
+    <span>Source</span>
+    <div class="ui buttons">
+      <button class="ui basic button state-files">Files</button>
+      <button class="ui basic button state-url">URL</button>
+      <button class="ui basic button state-cloud">Cloud</button>
+    </div>
+  </div>
+
   <!-- Input file form -->
-  <div class="ui form">
+  <div class="ui form tab-files">
     <input id="file-input" type="file" name="file" multiple onchange="send_data(event)" style="display: none"/>
 
     <div class="ui content">
@@ -175,6 +184,26 @@
     false
   );
 };
+</script>
+
+<script>
+const states = ['files', 'url', 'cloud'];
+let state = states[0];
+function setState(s) {
+  state = s;
+  states.forEach(s => {
+    if (s === state) {
+      $('.state-' + s).addClass('primary')
+    } else {
+      $('.state-' + s).removeClass('primary')
+    }
+    $('.tab-' + s).attr('hidden', s !== state);
+  })
+}
+states.forEach(s => {
+  $('.state-' + s).on('click', () => setState(s))
+})
+setState('files')
 </script>
 
 <script>
