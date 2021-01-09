@@ -43,11 +43,11 @@
       <script src="<%- url_for("/js/smooth-scroll.min.js") %>"></script>
 
       <%- css('css/new-styles') %>
+      <%- css('css/search') %>
 
     <!-- main page styles -->
     <% if (!isIndex) { %>
       <%- css('css/page') %>
-      <%- css('css/search') %>
     <% } %>
 
     <% if (page.type === "playground") { %>

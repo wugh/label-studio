@@ -150,10 +150,12 @@ div.container{
 }
 .head__main{
   transition:.2s ease all;
+  position: absolute;
 }
-.head__main.active__head{
+.outer__main>.head__main.active__head{
   background-color:#fff;
   z-index: 20;
+  position: fixed;
 }
 .head__main .container__head{
   display: flex;

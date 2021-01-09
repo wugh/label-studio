@@ -51,10 +51,8 @@ $(document).ready(function(){
     if (window.innerWidth > 991) {
       if (window.scrollY > 70) {
         document.querySelector(".head__main").classList.add("active__head");
-        document.querySelector(".head__main").style.position = "fixed";
       } else {
         document.querySelector(".head__main").classList.remove("active__head");
-        document.querySelector(".head__main").style.position = "absolute";
       }
     }  
   }
