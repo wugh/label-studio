@@ -764,7 +764,7 @@ div.container{
   margin-bottom:15px;
 }
 .community__image>.community__team{
-  max-width:66px;
+  max-width:50px;
 }
 .community__image>.community__border{
   position: absolute;
@@ -822,12 +822,15 @@ div.container{
   color:rgba(0,0,0,.2);
 }
 .community__info>a{
-  display: inline-flex;
-  align-items:center;
-  justify-content:center;
+  display: inline-block;
   transition:.4s ease all;
   text-decoration: none;
   color:#E68F52;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 .community__info>a:hover{
   opacity:.7;
