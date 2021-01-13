@@ -73,8 +73,11 @@ header .join__slack {
   font-size: 14px;
   position: absolute;
   right: 0;
-  padding: 6px 8px;
+  padding: 8px 10px;
   display: flex;
+      text-decoration: none;
+    font-weight: bold;
+    color: #5c1751;
 }
 header .join__slack img {
   max-height: 16px;
