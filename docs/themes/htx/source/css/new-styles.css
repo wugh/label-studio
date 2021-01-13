@@ -67,6 +67,26 @@ header{
   opacity:.7;
 }
 
+header .join__slack {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  position: absolute;
+  right: 0;
+  padding: 6px 8px;
+  display: flex;
+}
+header .join__slack img {
+  max-height: 16px;
+  margin-right: 6px;
+}
+header .join__slack:active {
+  background: white;
+}
+header .join__slack:hover {
+  border-color: #ddd;
+}
+
 @media (max-width: 991px){
   header{
     display: none;
