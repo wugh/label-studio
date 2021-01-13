@@ -266,6 +266,11 @@ div.container{
 .content__wrapper .content__elem p.title__code{
   font-family:"JetBrainsBold" , sans-serif;
   color:#E68F52;
+  user-select: none;
+  /*** this allows to select another text like there are no anything;
+  /* `user-select` alone prevents from selecting this text
+  /* but also don't allow to select any other text as well :( ***/
+  pointer-events: none;
 }
 .content__wrapper .content__elem p.code__content{
   font-family:"JetBrainsBold" , sans-serif;
@@ -281,6 +286,9 @@ div.container{
   text-align:center;
   margin-right:10px;
   justify-content:center;
+  user-select: none;
+  /* see above in .title_code */
+  pointer-events: none;
 }
 .date__type .head__date--type{
   display: flex;
