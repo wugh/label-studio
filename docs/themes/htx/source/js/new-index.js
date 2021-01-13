@@ -33,18 +33,6 @@ $(document).ready(function(){
     });
   })
 
-  document.querySelector(".menu__icon>a").addEventListener("click", function(e){
-    e.preventDefault();
-    if (document.querySelector(".menu__icon>a").classList.contains("active__menu")) {
-      document.querySelector(".menu__icon>a").classList.remove("active__menu");
-      document.querySelector(".container__head").style.top = "-100vh";
-      document.querySelector("body , html").style.overflow = "auto";
-    } else {
-      document.querySelector(".menu__icon>a").classList.add("active__menu");
-      document.querySelector(".container__head").style.top = "0px";
-      document.querySelector("body , html").style.overflow = "hidden";
-    }
-  });
   let last_known_scroll_position = 0;
   let ticking = false;
   function doSomething(scroll_pos) {

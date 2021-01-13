@@ -1,50 +1,13 @@
 <%- css('css/new-index') %>
 
+<%- partial('partials/header', { context: 'nav' }) %>
+<script>
+const menu = document.querySelector('.head__main')
+menu && menu.classList.add('main__page__header')
+</script>
 <div class="main__block">
   <div class="container">
     <div class="outer__main">
-      <div class="head__main">
-        <div class="small__head">
-          <a href="/">
-            <img src="<%- url_for("/images/new/logofirst.svg") %>" alt="logofirst">
-          </a>
-          <div class="menu__icon">
-            <a href="#">
-              <span></span>
-              <span></span>
-              <span></span>
-            </a>
-          </div>
-        </div>
-        <div class="container__head">
-          <a href="/">
-            <img src="<%- url_for("/images/new/logofirst.svg") %>" alt="logofirst">
-          </a>
-          <div class="head__menu--wrapper">
-            <ul>
-              <li><a href="<%- url_for("/guide/") %>">Guide</a></li>
-              <li><a href="<%- url_for("/tags/") %>">Tags</a></li>
-              <li><a href="<%- url_for("/templates/") %>">Templates</a></li>
-              <li><a href="<%- url_for("/playground/") %>">Playground</a></li>
-              <li><a href="<%- url_for("/blog/") %>">Blog</a></li>
-            </ul>
-          </div>
-          <div class="search__head">
-            <input type="text" placeholder="Search" id="local-search-input">
-            <input type="submit" value="">
-          </div>
-        </div>
-
-        <div id="local-search-result-wrapper"></div>
-        <script>
-          var search_path = "<%= config.search.path %>";
-          if (search_path.length === 0) {
-            search_path = "search.xml";
-          }
-          var path = "<%= config.root %>" + search_path;
-          searchFunc(path, 'local-search-input', 'local-search-result-wrapper');
-        </script>
-      </div>
       <div class="main__content">
         <div class="left__content">
           <h1>Open Source <br>

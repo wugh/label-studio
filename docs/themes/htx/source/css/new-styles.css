@@ -7,6 +7,8 @@ div.container{
 header{
   font-family:"Inter",sans-serif;
   background: #FFFFFF;
+  position: relative;
+  z-index: 21;
   box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.08);
 }
 .outer__header{
