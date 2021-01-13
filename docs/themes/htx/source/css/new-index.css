@@ -173,7 +173,7 @@ div.container{
   font-size:14px;
   font-weight:bold;
 }
-.commit--inner>.commit__counter{
+.commit--inner>.star__counter{
   min-width:54px;
   display: flex;
   align-items:center;

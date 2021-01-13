@@ -24,12 +24,25 @@ menu && menu.classList.add('main__page__header')
           <div class="commit__info">
             <a href="https://github.com/heartexlabs/label-studio" class="commit--inner" target="_blank">
               <span class="star__span"><img src="<%- url_for("/images/new/staricon.svg") %>" alt="starticon"> Star</span>
-              <span class="commit__counter">
-                3.7k
-              </span>
+              <span class="star__counter loading"></span>
             </a>
-            <p>Last commit: today</p>
+            <p class="last__commit">Last commit: <span></span></p>
           </div>
+          <script>
+          const star_counter = document.querySelector('.star__counter')
+          const last_commit = document.querySelector('.last__commit span')
+          fetch('https://api.github.com/repos/heartexlabs/label-studio')
+          .then(res => res.json())
+          .then(res => {
+            const date = new Date(res.pushed_at).toLocaleString('en', { year: 'numeric', month: 'short', day: 'numeric' })
+            last_commit.textContent = date
+            const stars = res.stargazers_count
+            if (stars) {
+              star_counter.textContent = stars
+              star_counter.classList.remove('loading')
+            }
+          })
+          </script>
         </div>
         <div class="right__content">
           <div class="content__switcher">
