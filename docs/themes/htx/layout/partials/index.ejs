@@ -448,7 +448,8 @@ menu && menu.classList.add('main__page__header')
           if (!sample) return
           const container = sample.parentNode
           container.removeChild(sample)
-          users.forEach(user => {
+          // shuffle them
+          users.sort(() => Math.random() - 0.5).forEach(user => {
             if (user.type !== "User") return
             const el = sample.cloneNode(true)
             el.querySelector('img.community__team').src = user.avatar_url
