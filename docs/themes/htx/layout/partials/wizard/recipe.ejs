@@ -1,0 +1,163 @@
+<script>
+const OBJECTS = {
+  Image: {
+    type: 'Image',
+    tags: ['img', 'image'],
+    settings: {
+      zoom: {
+        title: 'Allow to zoom image (ctrl+wheel)',
+        type: Boolean,
+        param: 'zoom',
+      },
+      zoomControl: {
+        title: 'Show controls to zoom in and out',
+        type: Boolean,
+        param: 'zoomControl',
+      },
+      rotateControl: {
+        title: 'Show controls to rotate image',
+        type: Boolean,
+        param: 'rotateControl',
+      },
+    },
+  },
+  Text: {
+    type: 'Text',
+    tags: ['text'],
+    settings: {
+      granularity: {
+        title: 'Select text by words',
+        type: Boolean,
+        param: ($obj, value) => value ? $obj.setAttribute('granularity', 'word') : $obj.removeAttribute('granularity'),
+      },
+    },
+  },
+}
+const OBJECT_TAGS = {}
+Object.values(OBJECTS).forEach(obj => obj.tags.forEach(tag => OBJECT_TAGS[tag] = obj))
+
+class Recipe {
+  objects = []
+  controls = []
+
+  constructor(recipe, el) {
+    this.recipe = recipe
+    this.element = el
+
+    this.parse()
+  }
+
+  flatten(el) {
+    const tags = []
+    for (let tag of el.children) {
+      tags.push(tag)
+      if (tag.children.length) tags.push(...this.flatten(tag))
+    }
+    return tags
+  }
+
+  fixXML(xml) {
+    return xml.replace(/<(\w+)(.*?)\/>/ig, '<$1$2></$1>').replace(/<img (.*?)>/, '<Image $1 />')
+  }
+
+  labelInit($label) {
+    // @todo always?
+    $label.$control = $label.parentNode
+    const lbl = TPLS.label.use({
+      span: $label.getAttribute('value')
+    })
+    lbl.querySelector('.delete').onclick = () => this.labelDelete($label)
+    $label._tag = lbl
+  }
+
+  labelAdd(text, $control) {
+    const $label = document.createElement("Label")
+    $label.setAttribute("value", text)
+    $control.appendChild($label)
+    this.labelInit($label)
+  }
+
+  labelDelete($label) {
+    $label.$control.removeChild($label)
+    $label._tag.parentNode.removeChild($label._tag)
+    this.render()
+  }
+
+  _render() {
+    const config = this.fixXML(this.config.innerHTML)
+    const host = 'https://app.heartex.ai'
+    $.ajax({
+      url: host + '/demo/render-editor?full_editor=t&playground=1',
+      method: 'POST',
+      xhrFields: { withCredentials: true },
+      data: { config },
+      success: data => {
+        const iframe = document.querySelector('.lsf iframe')
+        iframe.setAttribute('srcdoc', data)
+      },
+      error: function () {
+        $('#preload-editor').show();
+      }
+    })
+  }
+
+  render = debounce(this._render.bind(this), 250)
+
+  parse() {
+    const config = document.createElement('div')
+    this.config = config
+    config.innerHTML = this.fixXML(this.recipe.config)
+
+    const tags = this.flatten(config)
+    this.objects = tags.filter($tag => Object.keys(OBJECT_TAGS).includes($tag.tagName.toLowerCase()))
+    const names = this.objects.map($tag => $tag.getAttribute('name'))
+    this.controls = tags.filter($tag => names.includes($tag.getAttribute('toname')))
+
+    for (let $object of this.objects) {
+      const object = OBJECT_TAGS[$object.tagName.toLowerCase()]
+      $object._tag = this.element.querySelector('.configure__object')
+      $object._tag.querySelector('.object__type').textContent = object.type
+
+      this.element.querySelector('.configure__settings .object__type').textContent = object.type
+      Object.values(object.settings).forEach(options => {
+        const li = document.createElement('li')
+        switch (options.type) {
+          case Boolean:
+            const checkbox = document.createElement('input')
+            checkbox.type = 'checkbox'
+            checkbox.onchange = e => {
+              if (typeof options.param === "function") {
+                options.param($object, e.target.checked)
+              } else {
+                $object.setAttribute(options.param, e.target.checked ? 'true' : 'false')
+              }
+              this.render()
+            }
+            const label = document.createElement('label')
+            label.appendChild(checkbox)
+            label.appendChild(document.createTextNode(options.title))
+            li.appendChild(label)
+            break;
+        }
+        this.element.querySelector('.settings').appendChild(li)
+      })
+    }
+
+    for (let $control of this.controls) {
+      $control._tag = this.element.querySelector('.configure__labels')
+      const text = $control._tag.querySelector('textarea[name=labels]')
+      const btnAdd = $control._tag.querySelector('.add__labels input[type=button]')
+      btnAdd.onclick = () => {
+        text.value.split("\n").filter(Boolean).forEach(value => this.labelAdd(value, $control));
+        text.value = ""
+        this.render()
+      }
+      for (let $label of $control.children) {
+        this.labelInit($label)
+      }
+    }
+
+    this.render()
+  }
+}
+</script>

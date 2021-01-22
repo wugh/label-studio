@@ -1,0 +1,40 @@
+<script>
+function debounce(func, wait, immediate) {
+  let timeout
+
+  return function () {
+    const context = this, args = arguments
+    const later = () => {
+      timeout = null
+      if (!immediate) func.apply(context, args)
+    }
+    const callNow = immediate && !timeout
+
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) func.apply(context, args)
+  }
+}
+
+function selectRecipe(e) {
+  const recipe = this.recipe
+  const page = document.querySelector('.wizard > [data-page=recipe]')
+  page.querySelector('h1').textContent = recipe.title
+  // page.querySelector('.lsf').innerHTML = recipe.config
+
+  const R = new Recipe(recipe, page)
+  window.R = R
+
+  document.querySelector('.wizard').dataset.mode = 'recipe'
+}
+
+function initRecipesList() {
+  const tpl = TPLS.recipe
+
+  recipes.forEach(recipe => {
+    const el = tpl.use({ h3: recipe.title, img: img => img.src = recipe.image })
+    el.recipe = recipe
+    el.onclick = selectRecipe
+  })
+}
+</script>

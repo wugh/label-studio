@@ -72,7 +72,11 @@
       <%- partial('partials/header') %>
 
       <div id="main" <%- !isBlog ? 'class="fix-sidebar"': '' %>>
+        <% if (page.type === "playground") { %>
+          <%- partial('partials/wizard/index') %>
+        <% } else { %>
           <%- body %>
+        <% } %>
       </div>
 
       <script src="<%- url_for("/js/css.escape.js") %>"></script>

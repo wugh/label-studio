@@ -1,0 +1,38 @@
+<script>
+const recipes = [
+  {
+    title: "Bbox object detection",
+    type: "community",
+    image: "/images/wizard/bbox.png",
+    config: `<View>
+  <Image name="image" value="$image"/>
+  <RectangleLabels name="label" toName="image">
+    <Label value="Airplane" background="green"/>
+    <Label value="Car" background="blue"/>
+  </RectangleLabels>
+</View>`
+  },
+  {
+    title: "Named entity recognition",
+    type: "community",
+    image: "/images/wizard/text.png",
+    config: `<View>
+  <Labels name="label" toName="text">
+    <Label value="Person" background="red"/>
+    <Label value="Organization" background="darkorange"/>
+    <Label value="Fact" background="orange"/>
+    <Label value="Money" background="green"/>
+    <Label value="Date" background="darkblue"/>
+    <Label value="Time" background="blue"/>
+    <Label value="Ordinal" background="purple"/>
+    <Label value="Percent" background="#842"/>
+    <Label value="Product" background="#428"/>
+    <Label value="Language" background="#482"/>
+    <Label value="Location" background="rgba(0,0,0,0.8)"/>
+  </Labels>
+
+  <Text name="text" value="$text"/>
+</View>`
+  }
+]
+</script>

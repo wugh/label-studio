@@ -1,0 +1,61 @@
+<%- css('css/wizard') %>
+
+<%- partial('partials/wizard/tpls') %>
+<%- partial('partials/wizard/recipes') %>
+<%- partial('partials/wizard/recipe') %>
+<%- partial('partials/wizard/scripts') %>
+
+<div class="wizard" data-mode="list">
+  <div class="select__recipe" data-page="list">
+    <h1>Choose recipe</h1>
+    <ul>
+      <li data-template="recipe">
+        <img src="" alt="" />
+        <div class="recipe__type">Label studio</div>
+        <h3>Recipe's name</h3>
+      </li>
+    </ul>
+  </div>
+  <div data-page="recipe">
+    <a class="back" href="">Back to Templates</a>
+    <h1>Recipe's name</h1>
+    <div class="configure">
+      <div class="configure__object">
+        <h4>Configure data</h4>
+        <p>
+          <span class="object__type"></span> provided by
+          <select><option>$data</option></select>
+        </p>
+      </div>
+      <div class="configure__labels">
+        <form class="add__labels" action="">
+          <h4>Add label names</h4>
+          <textarea name="labels" id="" cols="30" rows="5"></textarea>
+          <input type="button" value="Add">
+        </form>
+        <ul>
+          <li data-template="label">
+            <span></span>
+            <!-- <input type="button" class="edit" value=""> -->
+            <input type="button" class="delete" value="🗑">
+          </li>
+        </ul>
+      </div>
+      <ul class="configure__settings">
+        <li>
+          <h4>Configure <span class="object__type"></span></h4>
+          <ul class="settings"></ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="lsf">
+      <iframe frameborder="0"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+initTemplates()
+initRecipesList()
+</script>

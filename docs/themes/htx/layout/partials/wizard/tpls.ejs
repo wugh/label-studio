@@ -1,0 +1,33 @@
+<script>
+const TPLS = {}
+
+function initTemplates(root = document) {
+  root.querySelectorAll('[data-template]').forEach(el => {
+    const name = el.dataset.template
+    const parent = el.parentNode
+    parent.removeChild(el)
+    TPLS[name] = {
+      name,
+      template: el,
+      parent,
+      clone() {
+        return this.template.cloneNode(true)
+      },
+      use(params, parent) {
+        const clone = this.clone()
+        for (let query in params) {
+          const e = clone.querySelector(query)
+          const val = params[query]
+          if (typeof val === 'function') {
+            val(e)
+          } else {
+            e.textContent = val
+          }
+        }
+        (parent || this.parent).appendChild(clone)
+        return clone
+      }
+    }
+  })
+}
+</script>
