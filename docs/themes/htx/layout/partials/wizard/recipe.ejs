@@ -4,6 +4,11 @@ const OBJECTS = {
     type: 'Image',
     tags: ['img', 'image'],
     settings: {
+      strokeWidth: {
+        title: 'Width of region borders',
+        type: Number,
+        param: ($obj, value) => $obj.$controls.forEach($control => $control.setAttribute('strokeWidth', value))
+      },
       zoom: {
         title: 'Allow to zoom image (ctrl+wheel)',
         type: Boolean,
@@ -66,6 +71,7 @@ class Recipe {
     const lbl = TPLS.label.use({
       span: $label.getAttribute('value')
     })
+    lbl.querySelector('.color').oninput = e => this.labelEdit($label, { background: e.target.value })
     lbl.querySelector('.delete').onclick = () => this.labelDelete($label)
     $label._tag = lbl
   }
@@ -75,6 +81,13 @@ class Recipe {
     $label.setAttribute("value", text)
     $control.appendChild($label)
     this.labelInit($label)
+  }
+
+  labelEdit($label, data) {
+    for (let key in data) {
+      $label.setAttribute(key, data[key])
+    }
+    this.render()
   }
 
   labelDelete($label) {
@@ -117,10 +130,13 @@ class Recipe {
       const object = OBJECT_TAGS[$object.tagName.toLowerCase()]
       $object._tag = this.element.querySelector('.configure__object')
       $object._tag.querySelector('.object__type').textContent = object.type
+      $object.$controls = this.controls.filter($tag => $tag.getAttribute('toname') === $object.getAttribute('name'))
+      $object.$controls.forEach($control => $control.$object = $object)
 
       this.element.querySelector('.configure__settings .object__type').textContent = object.type
       Object.values(object.settings).forEach(options => {
         const li = document.createElement('li')
+        let label
         switch (options.type) {
           case Boolean:
             const checkbox = document.createElement('input')
@@ -133,9 +149,27 @@ class Recipe {
               }
               this.render()
             }
-            const label = document.createElement('label')
+            label = document.createElement('label')
             label.appendChild(checkbox)
             label.appendChild(document.createTextNode(options.title))
+            li.appendChild(label)
+            break;
+          case String:
+          case Number:
+            const input = document.createElement('input')
+            input.type = 'text'
+            if (options.type === Number) input.size = 5
+            input.oninput = e => {
+              if (typeof options.param === "function") {
+                options.param($object, e.target.value)
+              } else {
+                $object.setAttribute(options.param, e.target.value)
+              }
+              this.render()
+            }
+            label = document.createElement('label')
+            label.appendChild(document.createTextNode(options.title + ' '))
+            label.appendChild(input)
             li.appendChild(label)
             break;
         }
