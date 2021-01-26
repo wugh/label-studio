@@ -85,7 +85,7 @@ const attachMenu = (triggerSelector, {trigger = 'mousedown', closeOnClickOutside
 
   const shoudlCloseOnClickOutside = () => {
     return closeOnClickOutside instanceof Function
-      ? closeOnClickOutside()
+      ? closeOnClickOutside(menuDropdown)
       : closeOnClickOutside;
   }
 
@@ -118,13 +118,13 @@ const attachMenu = (triggerSelector, {trigger = 'mousedown', closeOnClickOutside
 
 // Main menu
 attachMenu('.main-menu-trigger', {
-  closeOnClickOutside: false,
+  closeOnClickOutside(menu) {
+    return menu.classList.contains('sidebar-floating')
+  },
 });
 
 // Project menu
 attachMenu('.project-menu');
-
-window.addEventListener('resize', (e) => console.log('resize', e));
 
 // Pin/unpin menu sidebar
 document.addEventListener('click', (e) => {
