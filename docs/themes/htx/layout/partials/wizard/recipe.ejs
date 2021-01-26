@@ -70,7 +70,7 @@ class Recipe {
     $label.$control = $label.parentNode
     const lbl = TPLS.label.use({
       span: $label.getAttribute('value')
-    })
+    }, $label.$control._tag.querySelector('ul'))
     let color = $label.getAttribute('background')
     if (color && color[0] !== '#') color = colorNames[color]
     if (!color) color = PALETTE[paletteIndex++ % PALETTE.length]

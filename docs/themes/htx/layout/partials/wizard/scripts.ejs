@@ -18,9 +18,8 @@ function debounce(func, wait, immediate) {
 
 function selectRecipe(e) {
   const recipe = this.recipe
-  const page = document.querySelector('.wizard > [data-page=recipe]')
-  page.querySelector('h1').textContent = recipe.title
-  // page.querySelector('.lsf').innerHTML = recipe.config
+  const page = TPLS.page.use({ h1: recipe.title })
+  page.querySelector('.back').onclick = backToRecipesList
 
   const R = new Recipe(recipe, page)
   window.R = R
@@ -36,5 +35,13 @@ function initRecipesList() {
     el.recipe = recipe
     el.onclick = selectRecipe
   })
+}
+
+function backToRecipesList(ev) {
+  ev.preventDefault()
+  const wizard = document.querySelector('.wizard')
+  const page = wizard.querySelector('[data-page=recipe]')
+  wizard.dataset.mode = 'list'
+  wizard.removeChild(page)
 }
 </script>
