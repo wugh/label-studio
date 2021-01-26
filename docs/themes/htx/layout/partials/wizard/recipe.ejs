@@ -71,6 +71,11 @@ class Recipe {
     const lbl = TPLS.label.use({
       span: $label.getAttribute('value')
     })
+    let color = $label.getAttribute('background')
+    if (color && color[0] !== '#') color = colorNames[color]
+    if (!color) color = PALETTE[paletteIndex++ % PALETTE.length]
+    $label.setAttribute('background', color)
+    lbl.querySelector('.color').value = color
     lbl.querySelector('.color').oninput = e => this.labelEdit($label, { background: e.target.value })
     lbl.querySelector('.delete').onclick = () => this.labelDelete($label)
     $label._tag = lbl

@@ -1,5 +1,6 @@
 <%- css('css/wizard') %>
 
+<%- partial('partials/wizard/colors') %>
 <%- partial('partials/wizard/tpls') %>
 <%- partial('partials/wizard/recipes') %>
 <%- partial('partials/wizard/recipe') %>
@@ -35,8 +36,8 @@
         </form>
         <ul>
           <li data-template="label">
-            <span></span>
             <input type="color" class="color" value="">
+            <span></span>
             <input type="button" class="delete" value="🗑">
           </li>
         </ul>
