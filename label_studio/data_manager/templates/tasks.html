@@ -37,3 +37,7 @@
   <script src="static/js/build/index.js?version={{ version }}"></script>
 
 {% endblock %}
+
+{% block context_menu_left %}
+  {% include "components/project_breadcrumbs.html" %}
+{% endblock %}
