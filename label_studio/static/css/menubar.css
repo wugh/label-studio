@@ -30,6 +30,13 @@ body {
   box-shadow: 1px 0 0 0 #ccc inset, -1px 0 0 0 #ccc inset;
 }
 
+.menu-header__context-left,
+.menu-header__context-right {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .menu-header__trigger {
   display: flex;
   padding: 0 20px;
@@ -169,4 +176,58 @@ body {
   opacity: 0.6;
   font-size: 14px;
   line-height: 18px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+}
+
+.breadcrumbs__item {
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 22px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumbs__item + .breadcrumbs__item {
+  margin-left: 30px;
+  opacity: 0.6;
+}
+
+.breadcrumbs__item + .breadcrumbs__item::before {
+  top: 50%;
+  right: 100%;
+  width: 30px;
+  content: "";
+  height: 16px;
+  opacity: 0.5;
+  display: block;
+  position: absolute;
+  transform: translate3d(0, -50%, 0);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/static/images/header/arrow.svg');
+}
+
+.breadcrumb__settings {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-left: 10px;
+}
+
+.breadcrumb__settings img {
+  display: block;
+  opacity: 0.23;
 }

@@ -1,20 +1,12 @@
 {% extends "wrapper.html" %}
 
-{% macro icon(name, size=18, class="") -%}
-  <img
-    alt="Icon {{ name }}"
-    width="{{ size }}"
-    height="{{ size }}"
-    src="/static/images/header/{{ name }}.svg"
-    class="{{ class }}"
-  />
-{%- endmacro %}
+{% import "includes/helpers.html" as helpers %}
 
 {% macro menu_item(label, icon_name, class="", active=false, url="#") -%}
   {% set class = "sidebar__menu__item-active " + class if active == true %}
 
   <li><a class="sidebar__menu__item {{ class }}" href="{{ url }}">
-    {{ icon(icon_name, class="sidebar__menu__item-icon") }}
+    {{ helpers.icon(icon_name, class="sidebar__menu__item-icon") }}
     {{ label }}
   </a></li>
 {%- endmacro %}
@@ -25,7 +17,7 @@
     <div class="menu-header">
       <div class="menu-header__trigger">
         <img src="/static/images/logo-black.svg" alt="Label Studio Logo" height="22">
-        <img src="/static/images/header/menu.svg" alt="Label Studio Logo" height="14">
+        {{ helpers.icon("menu", size=18) }}
       </div>
       <div class="menu-header__context">
         <div id="context-menu-left" class="menu-header__context-left">
@@ -62,6 +54,7 @@
         </ul>
       </div>
     {% endif %}
+
     <div class="content">
       {% block body %}
         <div>Heidi is an Opossum!</div>

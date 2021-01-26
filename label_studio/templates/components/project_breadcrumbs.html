@@ -1,5 +1,12 @@
-<div class="breadcrumb">
+{% import "includes/helpers.html" as helpers %}
 
-  Hello world
+<div class="breadcrumbs">
+  <ul class="breadcrumbs__list">
+    <li class="breadcrumbs__item">Project</li>
+    <li class="breadcrumbs__item">My Awesome Project</li>
+  </ul>
 
+  <a class="breadcrumb__settings" href="#">
+    {{ helpers.icon('gear', size=20) }}
+  </a>
 </div>
