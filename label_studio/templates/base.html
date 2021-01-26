@@ -47,7 +47,10 @@
 
         <li class="menu-dropdown__divider"></li>
 
-        {{ menu.menu_item("Pin menu", icon="pin", class="sidebar__pin") }}
+        {% call menu.menu_item(icon="pin", class="sidebar__pin") %}
+          <span class="pin-menu">Pin menu</span>
+          <span class="unpin-menu">Unpin menu</span>
+        {% endcall %}
       {% endcall %}
     {% endif %}
 

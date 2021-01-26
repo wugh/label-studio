@@ -44,8 +44,7 @@ const lsSet = (key, value) => localStorage.setItem(key, value)
  * @param {string} selector
  */
 const matchesSelector = (element, selector) => {
-  if (element?.matches?.(selector)) return true
-  if (element?.closest?.(selector)) true
+  if (element?.matches?.(selector) || element?.closest?.(selector)) return true
   return false
 }
 
@@ -163,7 +162,7 @@ const ls = {
 
 // Main menu
 attachMenu('.main-menu-trigger', {
-  defaultVisible: ls.menuVisible,
+  defaultVisible: ls.sidebarPinned && ls.menuVisible,
   animate(menu) {
     return menu.classList.contains('sidebar-floating')
   },

@@ -19,7 +19,7 @@
   {% set class = "menu-dropdown__menu__item-active " + class if active == true else class %}
 
   <li><a class="menu-dropdown__menu__item {{ class }}" href="{{ url }}">
-    {{ helpers.icon(icon, class="menu-dropdown__menu__item-icon") if icon }}
-    {{ label }}
+    {{ helpers.icon(icon, class="icon menu-dropdown__menu__item-icon") if icon }}
+    {{ caller() if caller is defined else label }}
   </a></li>
 {%- endmacro %}
