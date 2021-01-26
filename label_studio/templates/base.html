@@ -9,17 +9,24 @@
     <div class="menu-header">
       <div class="menu-header__trigger menu-trigger">
         <img src="/static/images/logo-black.svg" alt="Label Studio Logo" height="22">
-        {{ helpers.icon("menu", size=18, class="main-menu-trigger", data={"menu": ".menu-dropdown.sidebar", "hello": "world"}) }}
+        {{ helpers.icon(
+            "menu",
+            size=18,
+            class="main-menu-trigger",
+            data={
+              "menu": ".menu-dropdown.sidebar"
+            }
+        )}}
       </div>
       <div class="menu-header__context">
         <div id="context-menu-left" class="menu-header__context-left">
-          {% block context_menu_left %}Left context part{% endblock %}
+          {% block context_menu_left %}{% endblock %}
         </div>
         <div id="context-menu-right" class="menu-header__context-right">
-          {% block context_menu_right %}Right context part{% endblock %}
+          {% block context_menu_right %}{% endblock %}
         </div>
       </div>
-      <div class="menu-header__user">
+      <div class="menu-header__user" data-menu="">
         User part here
       </div>
     </div>
@@ -28,16 +35,15 @@
   <div class="content-wrapper__body">
     {% if menu_bar_enabled %}
       {% call menu.wrapper(class="sidebar sidebar-floating") %}
-        {{ menu.menu_item("Project", icon="folder", active=true) }}
-        {{ menu.menu_item("Organization", icon="office") }}
-        {{ menu.menu_item("Teams", icon="person-circle") }}
+        {{ menu.menu_item("Tasks", url="/tasks", icon="folder") }}
+        {{ menu.menu_item("Model", url="/model", icon="office") }}
 
         <li class="menu-dropdown__spacer"></li>
 
         {% include "components/version_notification.html" %}
 
         {{ menu.menu_item("API", icon="terminal") }}
-        {{ menu.menu_item("Documentation", icon="book") }}
+        {{ menu.menu_item("Docs", icon="book", url="/guide") }}
 
         <li class="menu-dropdown__divider"></li>
 

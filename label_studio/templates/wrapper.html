@@ -22,7 +22,6 @@
   <script src="static/js/popper.min.js"></script>
   <script src="static/js/tippy-bundle.umd.min.js"></script>
   <script src="static/js/helpers.js?v3"></script>
-  <script src="static/js/menubar.js"></script>
 
   <script src="https://browser.sentry-cdn.com/5.17.0/bundle.min.js"
           integrity="sha384-lowBFC6YTkvMIWPORr7+TERnCkZdo5ab00oH5NkFLeQUAmBTLGwJpFjF6djuxJ/5"
@@ -48,19 +47,9 @@
   $(function() {
     tippy('[data-tippy-content]', {allowHTML: true});
   });
-
-  // hide logo if it intersects with menu
-  $(window).resize(function() {
-    var logo = $('#logo-text');
-    logo.show();  // show logo text to calc its position
-    if (logo.offset().left + logo.width() >= $('#nav').offset().left) {
-      logo.hide();
-    }
-    else {
-      logo.show();
-    }
-  })
 </script>
+
+<script src="static/js/menubar.js"></script>
 
 </body>
 </html>

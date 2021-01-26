@@ -43,53 +43,108 @@ const matchesSelector = (element, selector) => {
   return false
 }
 
-const attachMenu = (triggerSelector, {trigger = 'click'} = {}) => {
-  /**
-   * @param {HTMLElement} menu
-   */
-  const toggleMenu = (menu) => {
-    const classState = {
-      beforeAppear: 'menu-dropdown-before-appear',
-      appear: 'menu-dropdown-appear',
-      beforeDisappear: 'menu-dropdown-before-disappear',
-      disappear: 'menu-dropdown-disappear',
-    }
-    const classVisible = 'menu-dropdown-visible';
-    const isHidden = !menu.classList.contains(classVisible);
+/**
+ * @param {HTMLElement} menu
+ */
+const setMenuState = (menu, {visible} = {}) => {
+  const classState = {
+    beforeAppear: 'menu-dropdown-before-appear',
+    appear: 'menu-dropdown-appear',
+    beforeDisappear: 'menu-dropdown-before-disappear',
+    disappear: 'menu-dropdown-disappear',
+  }
+  const classVisible = 'menu-dropdown-visible';
+  const currentlyVisible = menu.classList.contains(classVisible);
 
-    aroundTransition(menu, {
-      transition() {
-        menu.classList.add(isHidden ? classState.appear : classState.disappear);
-      },
-      beforeTransition() {
-        menu.classList.add(isHidden ? classState.beforeAppear : classState.beforeDisappear);
-      },
-      afterTransition() {
-        menu.classList.remove(...Object.values(classState));
-        menu.classList[isHidden ? 'add' : 'remove'](classVisible);
-      }
-    });
+  if (currentlyVisible === visible) return;
+
+  aroundTransition(menu, {
+    transition() {
+      menu.classList.add(visible ? classState.appear : classState.disappear);
+    },
+    beforeTransition() {
+      menu.classList.add(visible ? classState.beforeAppear : classState.beforeDisappear);
+    },
+    afterTransition() {
+      menu.classList.remove(...Object.values(classState));
+      menu.classList[visible ? 'add' : 'remove'](classVisible);
+    }
+  });
+}
+
+const toggleMenu = (menu) => {
+  const classVisible = 'menu-dropdown-visible';
+  let currentlyVisible = menu.classList.contains(classVisible);
+
+  setMenuState(menu, { visible: currentlyVisible ? false : true });
+}
+
+const attachMenu = (triggerSelector, {trigger = 'mousedown', closeOnClickOutside = true} = {}) => {
+  /** @type {HTMLElement} */
+  let menuDropdown = null;
+
+  const shoudlCloseOnClickOutside = () => {
+    return closeOnClickOutside instanceof Function
+      ? closeOnClickOutside()
+      : closeOnClickOutside;
+  }
+
+  const clickedOutside = (target) => {
+    return menuDropdown && !menuDropdown.contains(target);
   }
 
   document.addEventListener(trigger, (e) => {
     if (matchesSelector(e.target, triggerSelector)) {
+      e.preventDefault();
+      e.stopPropagation();
+
       /** @type {HTMLElement} */
       const triggeringElement = e.target;
 
       const menuSelector = triggeringElement.dataset?.menu;
-      const menuDropdown = menuSelector
+
+      menuDropdown = menuSelector
         ? document.querySelector(menuSelector)
         : triggeringElement.querySelector('.menu-dropdown');
 
       console.assert(!!menuDropdown, "Menu dropdown is not attached");
 
       toggleMenu(menuDropdown);
+    } else if (clickedOutside(e.target) && shoudlCloseOnClickOutside()) {
+      setMenuState(menuDropdown, { visible: false });
     }
   }, {capture: true});
 }
 
 // Main menu
-attachMenu('.main-menu-trigger');
+attachMenu('.main-menu-trigger', {
+  closeOnClickOutside: false,
+});
 
 // Project menu
 attachMenu('.project-menu');
+
+window.addEventListener('resize', (e) => console.log('resize', e));
+
+// Pin/unpin menu sidebar
+document.addEventListener('click', (e) => {
+  if (matchesSelector(e.target, '.sidebar__pin')) {
+    e.preventDefault();
+
+    const sidebar = document.querySelector('.sidebar')
+
+    if (sidebar.classList.contains('sidebar-floating')) {
+      sidebar.classList.remove('sidebar-floating');
+      localStorage.setItem('sidebar-floating', false);
+    } else {
+      sidebar.classList.add('sidebar-floating');
+      localStorage.setItem('sidebar-floating', true);
+    }
+
+    window.dispatchEvent(new Event('resize'));
+  }
+});
+
+if (localStorage.getItem('sidebar-floating') === 'false') {
+  document.querySelector('.sidebar').classList.remove('sidebar-floating');
+}

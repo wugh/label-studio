@@ -5,7 +5,7 @@
   <ul class="breadcrumbs__list">
     <li class="breadcrumbs__item project-menu">
       Project
-      {% call menu.wrapper(menuAlign="left") %}
+      {% call menu.wrapper(align="left") %}
         {{ menu.menu_item("My awesome project", active=true) }}
         {{ menu.menu_item("Another project") }}
         {{ menu.menu_item("Third project") }}
@@ -13,8 +13,4 @@
     </li>
     <li class="breadcrumbs__item">My Awesome Project</li>
   </ul>
-
-  <a class="breadcrumb__settings" href="#">
-    {{ helpers.icon('gear', size=20) }}
-  </a>
 </div>
