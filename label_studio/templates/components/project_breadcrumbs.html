@@ -1,8 +1,16 @@
 {% import "includes/helpers.html" as helpers %}
+{% import "components/menu_dropdown.html" as menu %}
 
 <div class="breadcrumbs">
   <ul class="breadcrumbs__list">
-    <li class="breadcrumbs__item">Project</li>
+    <li class="breadcrumbs__item project-menu">
+      Project
+      {% call menu.wrapper(menuAlign="left") %}
+        {{ menu.menu_item("My awesome project", active=true) }}
+        {{ menu.menu_item("Another project") }}
+        {{ menu.menu_item("Third project") }}
+      {% endcall %}
+    </li>
     <li class="breadcrumbs__item">My Awesome Project</li>
   </ul>
 

@@ -1,9 +1,18 @@
-{% macro icon(name, size=18, class="") -%}
+{% macro icon(name, size=18, class="", data={}) -%}
+  {% set data_attr = namespace(value="") %}
+
+  {% for key, value in data.items() %}
+    {% set data_key = "data-" + (key | safe) %}
+    {% set data_value = (value | e) %}
+    {% set data_attr.value = data_attr.value + " " + data_key + "=" + (value | safe) %}
+  {% endfor %}
+
   <img
     alt="Icon {{ name }}"
     width="{{ size }}"
     height="{{ size }}"
     src="/static/images/header/{{ name }}.svg"
     class="{{ class }}"
+    {{ data_attr.value }}
   />
 {%- endmacro %}

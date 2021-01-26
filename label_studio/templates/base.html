@@ -1,23 +1,15 @@
 {% extends "wrapper.html" %}
 
 {% import "includes/helpers.html" as helpers %}
-
-{% macro menu_item(label, icon_name, class="", active=false, url="#") -%}
-  {% set class = "sidebar__menu__item-active " + class if active == true %}
-
-  <li><a class="sidebar__menu__item {{ class }}" href="{{ url }}">
-    {{ helpers.icon(icon_name, class="sidebar__menu__item-icon") }}
-    {{ label }}
-  </a></li>
-{%- endmacro %}
+{% import "components/menu_dropdown.html" as menu %}
 
 {% block page_content %}
 <div class="content-wrapper">
   {% if menu_bar_enabled %}
     <div class="menu-header">
-      <div class="menu-header__trigger">
+      <div class="menu-header__trigger menu-trigger">
         <img src="/static/images/logo-black.svg" alt="Label Studio Logo" height="22">
-        {{ helpers.icon("menu", size=18) }}
+        {{ helpers.icon("menu", size=18, class="main-menu-trigger", data={"menu": ".menu-dropdown.sidebar", "hello": "world"}) }}
       </div>
       <div class="menu-header__context">
         <div id="context-menu-left" class="menu-header__context-left">
@@ -33,29 +25,27 @@
     </div>
   {% endif %}
 
-  <div class="menu-body">
+  <div class="content-wrapper__body">
     {% if menu_bar_enabled %}
-      <div class="menu-body__sidebar sidebar sidebar-floating">
-        <ul class="sidebar__menu">
-          {{ menu_item("Project", "folder", active=true) }}
-          {{ menu_item("Organization", "office") }}
-          {{ menu_item("Teams", "person-circle") }}
+      {% call menu.wrapper(class="sidebar sidebar-floating") %}
+        {{ menu.menu_item("Project", icon="folder", active=true) }}
+        {{ menu.menu_item("Organization", icon="office") }}
+        {{ menu.menu_item("Teams", icon="person-circle") }}
 
-          <li class="sidebar__spacer"></li>
+        <li class="menu-dropdown__spacer"></li>
 
-          {% include "components/version_notification.html" %}
+        {% include "components/version_notification.html" %}
 
-          {{ menu_item("API", "terminal") }}
-          {{ menu_item("Documentation", "book") }}
+        {{ menu.menu_item("API", icon="terminal") }}
+        {{ menu.menu_item("Documentation", icon="book") }}
 
-          <li class="sidebar__divider"></li>
+        <li class="menu-dropdown__divider"></li>
 
-          {{ menu_item("Pin menu", "pin", class="sidebar__pin") }}
-        </ul>
-      </div>
+        {{ menu.menu_item("Pin menu", icon="pin", class="sidebar__pin") }}
+      {% endcall %}
     {% endif %}
 
-    <div class="content">
+    <div class="content-wrapper__content">
       {% block body %}
         <div>Heidi is an Opossum!</div>
       {% endblock %}

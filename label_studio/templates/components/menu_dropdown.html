@@ -1,0 +1,24 @@
+{% import "includes/helpers.html" as helpers %}
+
+{% macro menu_item(label, icon="", class="", active=false, url="#") -%}
+  {% set class = "menu-dropdown__menu__item-active " + class if active == true %}
+
+  <li><a class="menu-dropdown__menu__item {{ class }}" href="{{ url }}">
+    {{ helpers.icon(icon, class="menu-dropdown__menu__item-icon") if icon }}
+    {{ label }}
+  </a></li>
+{%- endmacro %}
+
+{% macro wrapper(class="", menuAlign="") -%}
+  {% set class_name = "menu-dropdown" %}
+
+  {% set class_name = (class_name + " " + class) %}
+
+  {% set class_name = (class_name + " menu-dropdown-align_" + menuAlign) %}
+
+  <div class="{{ class_name }}">
+    <ul class="menu-dropdown__menu">
+      {{ caller() }}
+    </ul>
+  </div>
+{%- endmacro %}
