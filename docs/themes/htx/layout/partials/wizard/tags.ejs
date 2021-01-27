@@ -1,0 +1,43 @@
+<script>
+const OBJECTS = {
+  Image: {
+    type: 'Image',
+    tags: ['img', 'image'],
+    settings: {
+      strokeWidth: {
+        title: 'Width of region borders',
+        type: Number,
+        param: ($obj, value) => $obj.$controls.forEach($control => $control.setAttribute('strokeWidth', value))
+      },
+      zoom: {
+        title: 'Allow to zoom image (ctrl+wheel)',
+        type: Boolean,
+        param: 'zoom',
+      },
+      zoomControl: {
+        title: 'Show controls to zoom in and out',
+        type: Boolean,
+        param: 'zoomControl',
+      },
+      rotateControl: {
+        title: 'Show controls to rotate image',
+        type: Boolean,
+        param: 'rotateControl',
+      },
+    },
+  },
+  Text: {
+    type: 'Text',
+    tags: ['text'],
+    settings: {
+      granularity: {
+        title: 'Select text by words',
+        type: Boolean,
+        param: ($obj, value) => value ? $obj.setAttribute('granularity', 'word') : $obj.removeAttribute('granularity'),
+      },
+    },
+  },
+}
+const OBJECT_TAGS = {}
+Object.values(OBJECTS).forEach(obj => obj.tags.forEach(tag => OBJECT_TAGS[tag] = obj))
+</script>
