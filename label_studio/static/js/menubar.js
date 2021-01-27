@@ -120,11 +120,6 @@ const attachMenu = (triggerSelector, {
   }
 
   const clickedOutside = (target) => {
-    console.log({target, menuDropdown,
-      same: menuDropdown === target,
-      contains: menuDropdown.contains(target)
-    })
-
     if (menuDropdown === null) return false;
     if (menuDropdown === target) return false;
     if (menuDropdown.contains(target)) return false;
@@ -147,7 +142,6 @@ const attachMenu = (triggerSelector, {
     const triggeringElement = matchesSelector(e.target, triggerSelector);
 
     if (triggeringElement && !menuDropdown.contains(e.target)) {
-      console.log('trigger', triggeringElement, triggerSelector);
       e.preventDefault();
       e.stopPropagation();
 
@@ -196,6 +190,9 @@ attachMenu('.main-menu-trigger', {
 
 // Project menu
 attachMenu('.project-menu');
+
+// User menu
+attachMenu('.user-menu');
 
 // Pin/unpin menu sidebar
 document.addEventListener('click', (e) => {

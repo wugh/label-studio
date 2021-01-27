@@ -1,0 +1,15 @@
+{% set fallback_image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=' %}
+
+{% macro avatar(url, username) -%}
+  <div class="user-menu__userpic">
+    <img
+      src="{{ url }}"
+      onload="this.removeAttribute('onload'); this.removeAttribute('onerror'); this.style.opacity = 1"
+      onerror="this.src = '{{ fallback_image }}'; this.removeAttribute('onerror')"
+      alt="{{ username }}"
+    >
+    <span class="user-menu__username">
+      {{ username }}
+    </span>
+  </div>
+{%- endmacro %}

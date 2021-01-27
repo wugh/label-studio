@@ -2,6 +2,7 @@
 
 {% import "includes/helpers.html" as helpers %}
 {% import "components/menu_dropdown.html" as menu %}
+{% import "components/userpic.html" as userpic %}
 
 {% block page_content %}
 <div class="content-wrapper">
@@ -9,11 +10,7 @@
     <div class="menu-header">
       <div class="menu-header__trigger menu-trigger">
         <img src="/static/images/logo-black.svg" alt="Label Studio Logo" height="22">
-        <span class="main-menu-trigger" data-menu=".menu-dropdown.sidebar">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
+        {% include 'components/hamburger.html' %}
       </div>
       <div class="menu-header__context">
         <div id="context-menu-left" class="menu-header__context-left">
@@ -23,8 +20,14 @@
           {% block context_menu_right %}{% endblock %}
         </div>
       </div>
-      <div class="menu-header__user" data-menu="">
-        User part here
+      <div class="menu-header__user user-menu">
+        {{ userpic.avatar('#', 'NS') }}
+
+        {% call menu.wrapper(align="right") %}
+          {{ menu.menu_item("Account and settings") }}
+          {{ menu.menu_item("Dark mode") }}
+          {{ menu.menu_item("Log out") }}
+        {% endcall %}
       </div>
     </div>
   {% endif %}

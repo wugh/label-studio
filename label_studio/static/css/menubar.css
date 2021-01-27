@@ -1,5 +1,6 @@
 body {
   --header-height: 48px;
+  --menu-animation-duration: 0.25s
 }
 
 .menu-wrapper {
@@ -50,8 +51,48 @@ body {
 }
 
 .menu-header__user {
-  min-width: 92px;
-  max-width: 92px;
+  min-width: 68px;
+  max-width: 68px;
+}
+
+.user-menu {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-menu__userpic {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  border-radius: 13.5px;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+}
+
+.user-menu__userpic img {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  line-height: 22px;
+  object-fit: cover;
+  position: absolute;
+}
+
+.user-menu__username {
+  display: block;
+  font-size: 12px;
+  line-height: 22px;
+  font-weight: bold;
+  font-family: Roboto;
+  opacity: 0.4;
 }
 
 .content-wrapper__body {
@@ -78,7 +119,7 @@ body {
   display: block;
   position: absolute;
   background-color: #000;
-  transition: all 0.15s ease;
+  transition: all var(--menu-animation-duration) ease;
 }
 
 .main-menu-trigger:hover span,
@@ -133,14 +174,14 @@ body {
 }
 
 .menu-dropdown-align_right {
-  left: -20px;
+  right: -20px;
 }
 
 .menu-dropdown-before-appear {
   opacity: 0;
   display: flex;
   transform: translate3d(0, -30px, 0);
-  transition: all 0.15s cubic-bezier(.21,1.04,.68,1);
+  transition: all var(--menu-animation-duration) cubic-bezier(.21,1.04,.68,1);
 }
 
 .menu-dropdown-appear {
@@ -157,7 +198,7 @@ body {
   opacity: 1;
   display: flex;
   transform: translate3d(0, 0, 0);
-  transition: all 0.15s cubic-bezier(.21,1.04,.68,1);
+  transition: all var(--menu-animation-duration) cubic-bezier(.21,1.04,.68,1);
 }
 
 .menu-dropdown-disappear {
