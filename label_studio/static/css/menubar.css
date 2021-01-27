@@ -1,6 +1,7 @@
 body {
   --header-height: 48px;
-  --menu-animation-duration: 0.25s
+  --menu-animation-duration: 0.25s;
+  --menu-animation-curve: cubic-bezier(.21,1.04,.68,1);
 }
 
 .menu-wrapper {
@@ -103,6 +104,8 @@ body {
 
 .content-wrapper__content {
   flex: 1;
+  margin-left: 0;
+  transition: margin 0.25s var(--menu-animation-curve);
 }
 
 .main-menu-trigger {
@@ -180,31 +183,31 @@ body {
   right: -20px;
 }
 
-.menu-dropdown-before-appear {
+.menu-dropdown.before-appear {
   opacity: 0;
   display: flex;
   transform: translate3d(0, -30px, 0);
-  transition: all var(--menu-animation-duration) cubic-bezier(.21,1.04,.68,1);
+  transition: all var(--menu-animation-duration) var(--menu-animation-curve);
 }
 
-.menu-dropdown-appear {
+.menu-dropdown.appear {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
-.menu-dropdown-visible {
+.menu-dropdown.visible {
   opacity: 1;
   display: flex;
 }
 
-.menu-dropdown-before-disappear {
+.menu-dropdown.before-disappear {
   opacity: 1;
   display: flex;
   transform: translate3d(0, 0, 0);
-  transition: all var(--menu-animation-duration) cubic-bezier(.21,1.04,.68,1);
+  transition: all var(--menu-animation-duration) var(--menu-animation-curve);
 }
 
-.menu-dropdown-disappear {
+.menu-dropdown.disappear {
   opacity: 0;
   transform: translate3d(0, -30px, 0);
 }
@@ -271,7 +274,8 @@ body {
 
 .sidebar {
   overflow: auto;
-  position: static;
+  position: absolute;
+  top: var(--header-height);
   height: calc(100vh - var(--header-height));
 }
 
@@ -281,8 +285,6 @@ body {
 }
 
 .sidebar-floating {
-  position: absolute;
-  top: var(--header-height);
   box-shadow: 0 0 0 9999px rgba(0,0,0,0.2);
 }
 
@@ -301,6 +303,35 @@ body {
 .sidebar:not(.sidebar-floating) .sidebar__pin .icon {
   opacity: 1;
   transform: rotate(-45deg);
+}
+
+.sidebar:not(.sidebar-floating).before-appear {
+  opacity: 1;
+  transform: translate3d(-100%, 0, 0);
+}
+
+.sidebar:not(.sidebar-floating).appear {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.sidebar:not(.sidebar-floating).before-disappear {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.sidebar:not(.sidebar-floating).disappear {
+  opacity: 1;
+  transform: translate3d(-100%, 0, 0);
+}
+
+.sidebar:not(.sidebar-floating).appear ~ .content-wrapper__content,
+.sidebar:not(.sidebar-floating).visible ~ .content-wrapper__content {
+  margin-left: 240px;
+}
+
+.sidebar:not(.sidebar-floating).disappear ~ .content-wrapper__content {
+  margin-left: 0;
 }
 
 .header-icon {

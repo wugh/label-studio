@@ -54,12 +54,12 @@ const matchesSelector = (element, selector) => {
  */
 const setMenuState = (menu, {visible, animate} = {}) => {
   const classState = {
-    beforeAppear: 'menu-dropdown-before-appear',
-    appear: 'menu-dropdown-appear',
-    beforeDisappear: 'menu-dropdown-before-disappear',
-    disappear: 'menu-dropdown-disappear',
+    beforeAppear: 'before-appear',
+    beforeDisappear: 'before-disappear',
+    appear: 'appear',
+    disappear: 'disappear',
   }
-  const classVisible = 'menu-dropdown-visible';
+  const classVisible = 'visible';
   const currentlyVisible = menu.classList.contains(classVisible);
 
   if (currentlyVisible === visible) return visible;
@@ -85,7 +85,7 @@ const setMenuState = (menu, {visible, animate} = {}) => {
 }
 
 const toggleMenu = (menu, options = {}) => {
-  const classVisible = 'menu-dropdown-visible';
+  const classVisible = 'visible';
   let currentlyVisible = menu.classList.contains(classVisible);
 
   return setMenuState(menu, {
@@ -149,7 +149,7 @@ const attachMenu = (triggerSelector, {
 
       onMenuToggle?.(triggeringElement, menuDropdown, state);
     } else if (clickedOutside(e.target) && shoudlCloseOnClickOutside()) {
-      if (menuDropdown.classList.contains('menu-dropdown-visible')) {
+      if (menuDropdown.classList.contains('visible')) {
         e.preventDefault()
         e.stopPropagation();
       }
@@ -180,9 +180,6 @@ const setMenuInitialState = () => {
   // Main menu
   attachMenu('.main-menu-trigger', {
     defaultVisible: ls.sidebarPinned && ls.menuVisible,
-    animate(menu) {
-      return menu.classList.contains('sidebar-floating')
-    },
     closeOnClickOutside(menu) {
       return menu.classList.contains('sidebar-floating')
     },
