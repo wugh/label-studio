@@ -2,6 +2,7 @@ body {
   --header-height: 48px;
   --menu-animation-duration: 0.25s;
   --menu-animation-curve: cubic-bezier(.21,1.04,.68,1);
+  --menu-animation-start: -10px;
 }
 
 .menu-wrapper {
@@ -42,6 +43,7 @@ body {
 .menu-header__trigger {
   display: flex;
   padding: 0 20px;
+  cursor: pointer;
   align-items: center;
   justify-content: space-between;
 }
@@ -108,7 +110,7 @@ body {
   transition: margin 0.25s var(--menu-animation-curve);
 }
 
-.main-menu-trigger {
+.hamburger {
   width: 18px;
   height: 14px;
   cursor: pointer;
@@ -116,7 +118,7 @@ body {
   display: inline-block;
 }
 
-.main-menu-trigger span {
+.hamburger span {
   height: 2px;
   width: 100%;
   display: block;
@@ -124,46 +126,46 @@ body {
   background-color: #000;
 }
 
-.main-menu-trigger-animated span{
+.hamburger-animated span{
   transition: all var(--menu-animation-duration) ease;
 }
 
-.main-menu-trigger:hover span,
-.main-menu-trigger-opened span {
+.hamburger:hover span,
+.hamburger-opened span {
   background-color: #0077FF;
 }
 
-.main-menu-trigger span:nth-child(1) {
+.hamburger span:nth-child(1) {
   top: 0;
 }
 
-.main-menu-trigger span:nth-child(2) {
+.hamburger span:nth-child(2) {
   top: 50%;
   opacity: 1;
   transform: translate3d(0, -50%, 0);
 }
 
-.main-menu-trigger span:nth-child(3) {
+.hamburger span:nth-child(3) {
   bottom: 0;
 }
 
-.main-menu-trigger-opened span:nth-child(1) {
+.hamburger-opened span:nth-child(1) {
   top: 6px;
   transform: rotate(135deg);
 }
 
-.main-menu-trigger-opened span:nth-child(2) {
+.hamburger-opened span:nth-child(2) {
   opacity: 0;
   transform: translate3d(-100%, -50%, 0);
 }
 
-.main-menu-trigger-opened span:nth-child(3) {
+.hamburger-opened span:nth-child(3) {
   bottom: 6px;
   transform: rotate(-135deg);
 }
 
 .menu-dropdown {
-  top: 100%;
+  top: calc(100% + 1px);
   z-index: 500;
   width: 240px;
   padding: 8px;
@@ -186,7 +188,7 @@ body {
 .menu-dropdown.before-appear {
   opacity: 0;
   display: flex;
-  transform: translate3d(0, -30px, 0);
+  transform: translate3d(0, var(--menu-animation-start), 0);
   transition: all var(--menu-animation-duration) var(--menu-animation-curve);
 }
 
@@ -209,7 +211,7 @@ body {
 
 .menu-dropdown.disappear {
   opacity: 0;
-  transform: translate3d(0, -30px, 0);
+  transform: translate3d(0, var(--menu-animation-start), 0);
 }
 
 .menu-dropdown__menu {

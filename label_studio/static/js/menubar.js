@@ -186,7 +186,8 @@ const setMenuInitialState = () => {
     onMenuToggle(trigger, _, visible) {
       ls.menuVisible = visible;
 
-      trigger.classList[visible ? 'add' : 'remove']?.('main-menu-trigger-opened')
+      trigger.querySelector('.hamburger')
+        .classList[visible ? 'add' : 'remove']?.('hamburger-opened')
     }
   });
 
@@ -218,7 +219,7 @@ const setMenuInitialState = () => {
     }
   });
 
-  const menuButton = document.querySelector('.main-menu-trigger');
+  const menuButton = document.querySelector('.main-menu-trigger .hamburger');
 
   if (ls.sidebarPinned) {
     document.querySelector('.sidebar').classList.remove('sidebar-floating');
@@ -226,10 +227,10 @@ const setMenuInitialState = () => {
   }
 
   if (ls.sidebarPinned && ls.menuVisible) {
-    menuButton.classList.add('main-menu-trigger-opened')
+    menuButton.classList.add('hamburger-opened')
   }
 
   setTimeout(() => {
-    menuButton.classList.add('main-menu-trigger-animated')
+    menuButton.classList.add('hamburger-animated')
   }, 10);
 }
