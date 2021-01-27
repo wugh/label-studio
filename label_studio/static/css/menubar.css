@@ -237,10 +237,21 @@ body {
   opacity: 0.5;
 }
 
-.menu-dropdown__item:hover,
+.menu-dropdown__item:hover {
+  color: #000;
+}
+
+.menu-dropdown__item:not(.menu-dropdown__item-active):hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
 .menu-dropdown__item-active {
   color: #000;
   background-color: rgba(0, 0, 0, 0.08);
+}
+
+.menu-dropdown__item-active:not(.sidebar__pin) {
+  pointer-events: none;
 }
 
 .menu-dropdown__item:hover .menu-dropdown__item-icon,
@@ -272,7 +283,7 @@ body {
 .sidebar-floating {
   position: absolute;
   top: var(--header-height);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.2), 0 0 0 9999px rgba(0,0,0,0.2);
+  box-shadow: 0 0 0 9999px rgba(0,0,0,0.2);
 }
 
 .sidebar:not(.sidebar-floating) {
