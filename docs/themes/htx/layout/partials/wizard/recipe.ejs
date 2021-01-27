@@ -97,7 +97,15 @@ class Recipe {
       $object.$controls.forEach($control => $control.$object = $object)
 
       this.element.querySelector('.configure__settings .object__type').textContent = object.type
-      Object.values(object.settings).forEach(options => {
+
+      let settings = object.settings
+      $object.$controls.forEach($control => {
+        let type = $control.tagName.toLowerCase()
+        if (CONTROL_TAGS[type]) {
+          settings = { ...settings, ...CONTROL_TAGS[type].settings }
+        }
+      })
+      Object.values(settings).forEach(options => {
         const li = document.createElement('li')
         let label
         switch (options.type) {
@@ -106,7 +114,7 @@ class Recipe {
             checkbox.type = 'checkbox'
             checkbox.onchange = e => {
               if (typeof options.param === "function") {
-                options.param($object, e.target.checked)
+                options.param(options.control ? $object.$controls[0] : $object, e.target.checked)
               } else {
                 $object.setAttribute(options.param, e.target.checked ? 'true' : 'false')
               }

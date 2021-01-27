@@ -38,6 +38,32 @@ const OBJECTS = {
     },
   },
 }
+const CONTROLS = {
+  Labels: {
+    tags: ['labels', 'rectanglelabels'],
+    settings: {
+      filter: {
+        title: 'Add filter for long list of labels',
+        type: Boolean,
+        control: true,
+        param: ($obj, value) => {
+          if (value) {
+            const $filter = document.createElement('Filter')
+            $filter.setAttribute('toName', $obj.getAttribute('name'))
+            $filter.setAttribute('minlength', 0)
+            $filter.setAttribute('name', 'filter') // @todo should be unique
+            $obj.parentNode.insertBefore($filter, $obj)
+          } else {
+            const $filter = $obj.previousElementSibling
+            if ($filter.tagName === "FILTER") $obj.parentNode.removeChild($filter)
+          }
+        },
+      }
+    }
+  },
+}
 const OBJECT_TAGS = {}
 Object.values(OBJECTS).forEach(obj => obj.tags.forEach(tag => OBJECT_TAGS[tag] = obj))
+const CONTROL_TAGS = {}
+Object.values(CONTROLS).forEach(obj => obj.tags.forEach(tag => CONTROL_TAGS[tag] = obj))
 </script>
