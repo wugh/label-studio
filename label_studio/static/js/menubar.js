@@ -34,10 +34,6 @@ const aroundTransition = (element, {init, transition, onStart, beforeTransition,
 
 const callOrReturn = (value, ...args) => value instanceof Function ? value(...args) : value;
 
-const lsGet = (key) => localStorage.getItem(key)
-
-const lsSet = (key, value) => localStorage.setItem(key, value)
-
 /**
  *
  * @param {HTMLElement} element
@@ -108,19 +104,21 @@ const attachMenu = (triggerSelector, {
   /** @type {HTMLElement} */
   let menuDropdown = (() => {
     const triggeringElement = document.querySelector(triggerSelector);
-    const menuSelector = triggeringElement.dataset?.menu;
+    const menuSelector = triggeringElement?.dataset?.menu;
 
     return menuSelector
       ? document.querySelector(menuSelector)
-      : triggeringElement.querySelector('.menu-dropdown');
+      : triggeringElement?.querySelector('.menu-dropdown');
   })();
+
+  if (menuDropdown === null) return;
 
   const shoudlCloseOnClickOutside = () => {
     return callOrReturn(closeOnClickOutside, menuDropdown);
   }
 
   const clickedOutside = (target) => {
-    if (menuDropdown === null) return false;
+    if (!menuDropdown) return false;
     if (menuDropdown === target) return false;
     if (menuDropdown.contains(target)) return false;
 
@@ -138,7 +136,7 @@ const attachMenu = (triggerSelector, {
     })
   }
 
-  document.addEventListener(trigger, (e) => {
+  document.addEventListener("click", (e) => {
     const triggeringElement = matchesSelector(e.target, triggerSelector);
 
     if (triggeringElement && !menuDropdown.contains(e.target)) {
@@ -151,20 +149,26 @@ const attachMenu = (triggerSelector, {
 
       onMenuToggle?.(triggeringElement, menuDropdown, state);
     } else if (clickedOutside(e.target) && shoudlCloseOnClickOutside()) {
+      if (menuDropdown.classList.contains('menu-dropdown-visible')) {
+        e.preventDefault()
+        e.stopPropagation();
+      }
+
       const state = setMenuState(menuDropdown, {
         visible: false,
         animate: shouldAnimate()
       });
+
       onMenuToggle?.(document.querySelector(triggerSelector), menuDropdown, state);
     }
   }, {capture: true});
 }
 
 const ls = {
-  get menuVisible() { return lsGet(this._menuVisibility) == 'true' },
-  set menuVisible(value) { return lsSet(this._menuVisibility, value) },
-  get sidebarPinned() { return lsGet(this._sidebarPinned) == 'true' },
-  set sidebarPinned(value) { return lsSet(this._sidebarPinned, value) },
+  get menuVisible() { return localStorage.getItem(this._menuVisibility) == 'true' },
+  set menuVisible(value) { return localStorage.setItem(this._menuVisibility, value) },
+  get sidebarPinned() { return localStorage.getItem(this._sidebarPinned) == 'true' },
+  set sidebarPinned(value) { return localStorage.setItem(this._sidebarPinned, value) },
 
   /**@private */
   _menuVisibility: 'main-menu-visible',
@@ -172,53 +176,63 @@ const ls = {
   _sidebarPinned: 'sidebarPinned',
 }
 
-// Main menu
-attachMenu('.main-menu-trigger', {
-  defaultVisible: ls.sidebarPinned && ls.menuVisible,
-  animate(menu) {
-    return menu.classList.contains('sidebar-floating')
-  },
-  closeOnClickOutside(menu) {
-    return menu.classList.contains('sidebar-floating')
-  },
-  onMenuToggle(trigger, _, visible) {
-    ls.menuVisible = visible;
+const setMenuInitialState = () => {
+  // Main menu
+  attachMenu('.main-menu-trigger', {
+    defaultVisible: ls.sidebarPinned && ls.menuVisible,
+    animate(menu) {
+      return menu.classList.contains('sidebar-floating')
+    },
+    closeOnClickOutside(menu) {
+      return menu.classList.contains('sidebar-floating')
+    },
+    onMenuToggle(trigger, _, visible) {
+      ls.menuVisible = visible;
 
-    trigger.classList[visible ? 'add' : 'remove']?.('main-menu-trigger-opened')
-  }
-});
-
-// Project menu
-attachMenu('.project-menu');
-
-// User menu
-attachMenu('.user-menu');
-
-// Pin/unpin menu sidebar
-document.addEventListener('click', (e) => {
-  const pinButton = matchesSelector(e.target, '.sidebar__pin')
-  if (pinButton) {
-    e.preventDefault();
-
-    const sidebar = document.querySelector('.sidebar')
-
-    if (sidebar.classList.contains('sidebar-floating')) {
-      sidebar.classList.remove('sidebar-floating');
-      pinButton.classList.add('menu-dropdown__item-active');
-      ls.sidebarPinned = true;
-    } else {
-      sidebar.classList.add('sidebar-floating');
-      pinButton.classList.remove('menu-dropdown__item-active');
-      ls.sidebarPinned = false;
+      trigger.classList[visible ? 'add' : 'remove']?.('main-menu-trigger-opened')
     }
+  });
 
-    window.dispatchEvent(new Event('resize'));
+  // Project menu
+  attachMenu('.project-menu');
+
+  // User menu
+  attachMenu('.user-menu');
+
+  // Pin/unpin menu sidebar
+  document.addEventListener('click', (e) => {
+    const pinButton = matchesSelector(e.target, '.sidebar__pin')
+    if (pinButton) {
+      e.preventDefault();
+
+      const sidebar = document.querySelector('.sidebar')
+
+      if (sidebar.classList.contains('sidebar-floating')) {
+        sidebar.classList.remove('sidebar-floating');
+        pinButton.classList.add('menu-dropdown__item-active');
+        ls.sidebarPinned = true;
+      } else {
+        sidebar.classList.add('sidebar-floating');
+        pinButton.classList.remove('menu-dropdown__item-active');
+        ls.sidebarPinned = false;
+      }
+
+      window.dispatchEvent(new Event('resize'));
+    }
+  });
+
+  const menuButton = document.querySelector('.main-menu-trigger');
+
+  if (ls.sidebarPinned) {
+    document.querySelector('.sidebar').classList.remove('sidebar-floating');
+    document.querySelector('.sidebar__pin').classList.add('menu-dropdown__item-active');
   }
-});
 
-if (ls.sidebarPinned) {
-  document.querySelector('.sidebar').classList.remove('sidebar-floating');
-  document.querySelector('.sidebar__pin').classList.add('menu-dropdown__item-active');
+  if (ls.sidebarPinned && ls.menuVisible) {
+    menuButton.classList.add('main-menu-trigger-opened')
+  }
 
-  if (ls.menuVisible) document.querySelector('.main-menu-trigger').classList.add('main-menu-trigger-opened')
+  setTimeout(() => {
+    menuButton.classList.add('main-menu-trigger-animated')
+  }, 10);
 }

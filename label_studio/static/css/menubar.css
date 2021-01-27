@@ -119,6 +119,9 @@ body {
   display: block;
   position: absolute;
   background-color: #000;
+}
+
+.main-menu-trigger-animated span{
   transition: all var(--menu-animation-duration) ease;
 }
 
@@ -269,6 +272,7 @@ body {
 .sidebar-floating {
   position: absolute;
   top: var(--header-height);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2), 0 0 0 9999px rgba(0,0,0,0.2);
 }
 
 .sidebar:not(.sidebar-floating) {
