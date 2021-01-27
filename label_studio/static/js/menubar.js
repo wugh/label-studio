@@ -44,8 +44,13 @@ const lsSet = (key, value) => localStorage.setItem(key, value)
  * @param {string} selector
  */
 const matchesSelector = (element, selector) => {
-  if (element?.matches?.(selector) || element?.closest?.(selector)) return true
-  return false
+  const matched = element?.matches?.(selector);
+  if (matched) return element
+
+  const closest = element?.closest?.(selector);
+  if (closest) return closest
+
+  return null
 }
 
 /**
@@ -115,7 +120,16 @@ const attachMenu = (triggerSelector, {
   }
 
   const clickedOutside = (target) => {
-    return menuDropdown && !menuDropdown.contains(target);
+    console.log({target, menuDropdown,
+      same: menuDropdown === target,
+      contains: menuDropdown.contains(target)
+    })
+
+    if (menuDropdown === null) return false;
+    if (menuDropdown === target) return false;
+    if (menuDropdown.contains(target)) return false;
+
+    return true
   }
 
   const shouldAnimate = () => {
@@ -130,7 +144,10 @@ const attachMenu = (triggerSelector, {
   }
 
   document.addEventListener(trigger, (e) => {
-    if (matchesSelector(e.target, triggerSelector)) {
+    const triggeringElement = matchesSelector(e.target, triggerSelector);
+
+    if (triggeringElement && !menuDropdown.contains(e.target)) {
+      console.log('trigger', triggeringElement, triggerSelector);
       e.preventDefault();
       e.stopPropagation();
 
@@ -138,12 +155,13 @@ const attachMenu = (triggerSelector, {
         animate: shouldAnimate()
       });
 
-      onMenuToggle?.(menuDropdown, state);
+      onMenuToggle?.(triggeringElement, menuDropdown, state);
     } else if (clickedOutside(e.target) && shoudlCloseOnClickOutside()) {
-      setMenuState(menuDropdown, {
+      const state = setMenuState(menuDropdown, {
         visible: false,
         animate: shouldAnimate()
       });
+      onMenuToggle?.(document.querySelector(triggerSelector), menuDropdown, state);
     }
   }, {capture: true});
 }
@@ -169,8 +187,10 @@ attachMenu('.main-menu-trigger', {
   closeOnClickOutside(menu) {
     return menu.classList.contains('sidebar-floating')
   },
-  onMenuToggle(_, visible) {
+  onMenuToggle(trigger, _, visible) {
     ls.menuVisible = visible;
+
+    trigger.classList[visible ? 'add' : 'remove']?.('main-menu-trigger-opened')
   }
 });
 
@@ -179,16 +199,19 @@ attachMenu('.project-menu');
 
 // Pin/unpin menu sidebar
 document.addEventListener('click', (e) => {
-  if (matchesSelector(e.target, '.sidebar__pin')) {
+  const pinButton = matchesSelector(e.target, '.sidebar__pin')
+  if (pinButton) {
     e.preventDefault();
 
     const sidebar = document.querySelector('.sidebar')
 
     if (sidebar.classList.contains('sidebar-floating')) {
       sidebar.classList.remove('sidebar-floating');
+      pinButton.classList.add('menu-dropdown__item-active');
       ls.sidebarPinned = true;
     } else {
       sidebar.classList.add('sidebar-floating');
+      pinButton.classList.remove('menu-dropdown__item-active');
       ls.sidebarPinned = false;
     }
 
@@ -198,4 +221,7 @@ document.addEventListener('click', (e) => {
 
 if (ls.sidebarPinned) {
   document.querySelector('.sidebar').classList.remove('sidebar-floating');
+  document.querySelector('.sidebar__pin').classList.add('menu-dropdown__item-active');
+
+  if (ls.menuVisible) document.querySelector('.main-menu-trigger').classList.add('main-menu-trigger-opened')
 }

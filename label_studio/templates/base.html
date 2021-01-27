@@ -9,14 +9,11 @@
     <div class="menu-header">
       <div class="menu-header__trigger menu-trigger">
         <img src="/static/images/logo-black.svg" alt="Label Studio Logo" height="22">
-        {{ helpers.icon(
-            "menu",
-            size=18,
-            class="main-menu-trigger",
-            data={
-              "menu": ".menu-dropdown.sidebar"
-            }
-        )}}
+        <span class="main-menu-trigger" data-menu=".menu-dropdown.sidebar">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
       </div>
       <div class="menu-header__context">
         <div id="context-menu-left" class="menu-header__context-left">

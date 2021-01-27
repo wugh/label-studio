@@ -16,10 +16,10 @@
 
 {% macro menu_item(label, icon="", class="", active=false, url="#") -%}
   {% set active = active or (url in request.path) %}
-  {% set class = "menu-dropdown__menu__item-active " + class if active == true else class %}
+  {% set class = "menu-dropdown__item-active " + class if active == true else class %}
 
-  <li><a class="menu-dropdown__menu__item {{ class }}" href="{{ url }}">
-    {{ helpers.icon(icon, class="icon menu-dropdown__menu__item-icon") if icon }}
+  <li><a class="menu-dropdown__item {{ class }}" href="{{ url }}">
+    {{ helpers.icon(icon, class="icon menu-dropdown__item-icon") if icon }}
     {{ caller() if caller is defined else label }}
   </a></li>
 {%- endmacro %}
