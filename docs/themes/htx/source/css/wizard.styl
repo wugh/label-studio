@@ -1,3 +1,12 @@
+button()
+  background: #2593fc;
+  color: #fff;
+  border: 0;
+  border-radius: 3px;
+  padding: 4px 16px;
+  cursor: pointer;
+  font: inherit;
+
 .ls-panel
   display: none
 
@@ -5,14 +14,33 @@
   display: none
 
 .wizard[data-mode=list] > [data-page=list]
-  display: block
+  display: flex
+  gap: 48px
 .wizard[data-mode=recipe] > [data-page=recipe]
   display: flex
   flex-wrap: wrap
   column-gap: 2rem
   padding-top: 1rem
 
-.select__recipe
+.recipes__sidebar
+  width: 160px
+  h3:not(:first-child)
+    margin-top: 2em
+  ul
+    padding: 0;
+    list-style: none
+  li
+    margin: 12px 0
+    cursor: pointer
+    &:hover
+      text-decoration: underline
+    &.active
+      font-weight: 600
+      list-style: disc
+  a.button
+    button()
+
+.select__recipe main
   ul
     display: flex
     gap: 2rem

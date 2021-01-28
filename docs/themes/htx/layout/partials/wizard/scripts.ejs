@@ -16,9 +16,28 @@ function debounce(func, wait, immediate) {
   }
 }
 
+function selectGroup(e) {
+  const $current = this.parentNode.querySelector('.active')
+  if ($current === this) return
+  $current && $current.classList.remove('active')
+  this.classList.add('active')
+  document.querySelector('.select__recipe main h1').textContent = this.textContent
+  const $recipes = document.querySelector('.select__recipe main ul')
+  $recipes.innerHTML = ''
+
+  const group = this.textContent
+  const tpl = TPLS.recipe
+
+  recipes.filter(r => r.group === group).forEach(recipe => {
+    const el = tpl.use({ h3: recipe.title, img: img => img.src = recipe.image }, $recipes)
+    el.recipe = recipe
+    el.onclick = selectRecipe
+  })
+}
+
 function selectRecipe(e) {
   const recipe = this.recipe
-  const page = TPLS.page.use({ h1: recipe.title })
+  const page = TPLS.page.use({ 'h1>span': recipe.title })
   page.querySelector('.back').onclick = backToRecipesList
 
   const R = new Recipe(recipe, page)
@@ -28,13 +47,17 @@ function selectRecipe(e) {
 }
 
 function initRecipesList() {
-  const tpl = TPLS.recipe
+  const $groups = document.querySelector('.recipes__sidebar ul')
 
-  recipes.forEach(recipe => {
-    const el = tpl.use({ h3: recipe.title, img: img => img.src = recipe.image })
-    el.recipe = recipe
-    el.onclick = selectRecipe
+  const groups = new Set()
+  recipes.forEach(recipe => groups.add(recipe.group))
+  groups.forEach(group => {
+    const $group = document.createElement('li')
+    $group.textContent = group
+    $group.onclick = selectGroup
+    $groups.appendChild($group)
   })
+  selectGroup.call($groups.children[0])
 }
 
 function backToRecipesList(ev) {

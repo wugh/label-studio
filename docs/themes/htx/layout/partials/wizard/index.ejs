@@ -9,14 +9,22 @@
 
 <div class="wizard" data-mode="list">
   <div class="select__recipe" data-page="list">
-    <h1>Choose recipe</h1>
-    <ul>
-      <li data-template="recipe">
-        <img src="" alt="" />
-        <div class="recipe__type">Label studio</div>
-        <h3>Recipe's name</h3>
-      </li>
-    </ul>
+    <aside class="recipes__sidebar">
+      <h3>Applications</h3>
+      <ul></ul>
+      <h3>Advanced</h3>
+      <a href="/playground" class="button">Open config</a>
+    </aside>
+    <main>
+      <h1>Computer Vision </h1>
+      <ul>
+        <li data-template="recipe">
+          <img src="" alt="" />
+          <div class="recipe__type">Label studio</div>
+          <h3>Recipe's name</h3>
+        </li>
+      </ul>
+    </main>
   </div>
   <div data-page="recipe" data-template="page">
     <a class="back" href="">Back to Templates</a>
