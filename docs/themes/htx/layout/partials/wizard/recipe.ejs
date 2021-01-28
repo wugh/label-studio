@@ -2,12 +2,20 @@
 class Recipe {
   objects = []
   controls = []
+  details = false
 
   constructor(recipe, el) {
     this.recipe = recipe
     this.element = el
 
     this.parse()
+  }
+
+  toggleDetails() {
+    this.element.querySelector('.details').style.display = this.details ? 'none' : 'block'
+    this.element.querySelector('[name=details]').textContent = this.details ? 'Show details' : 'Configure setup'
+
+    this.details = !this.details
   }
 
   flatten(el) {
@@ -83,6 +91,10 @@ class Recipe {
     const config = document.createElement('div')
     this.config = config
     config.innerHTML = this.fixXML(this.recipe.config)
+
+    this.element.querySelector('.details').innerHTML = this.recipe.details
+    const $details = this.element.querySelector('[name=details]')
+    $details.onclick = () => this.toggleDetails()
 
     const tags = this.flatten(config)
     this.objects = tags.filter($tag => Object.keys(OBJECT_TAGS).includes($tag.tagName.toLowerCase()))

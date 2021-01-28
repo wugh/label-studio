@@ -5,6 +5,9 @@ const recipes = [
     type: "community",
     group: "Computer Vision",
     image: "/images/wizard/bbox.png",
+    details: `<h1>Simple object detection</h1>
+    <p>Sample config to label with bboxes</p>
+    <p>You can configure labels and their colors</p>`,
     config: `<View>
   <Image name="image" value="$image"/>
   <RectangleLabels name="label" toName="image">

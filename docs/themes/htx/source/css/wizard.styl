@@ -80,12 +80,33 @@ button()
     font-size: 1.4rem
     width: 100%
 
+  a.button,
+  button,
+  input[type=button]
+    button()
+
   .configure
     padding: 0 1rem
     margin: 0 -1rem 2rem
     background: #EDF4F7
     border-radius: 8px
     flex-grow: 1
+    position: relative
+
+    button[name=details]
+      position: absolute
+      right: 0
+      top: -2.7em
+
+    .details
+      position: absolute
+      left: 0
+      right: 0
+      top: 0
+      bottom: 0
+      background: #EDF4F7
+      border-radius: 8px
+      padding: 1rem
 
   .configure__object
     select
