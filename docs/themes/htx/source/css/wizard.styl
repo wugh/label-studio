@@ -79,6 +79,17 @@ button()
   h1
     font-size: 1.4rem
     width: 100%
+    display: flex
+
+    a[name=config]
+      margin-left: auto
+      font-size: 1rem
+      font-weight: 400
+      background: #ccc
+      &:hover
+        background: #2593fc;
+        &::before
+          content: "Advanced! "
 
   a.button,
   button,
