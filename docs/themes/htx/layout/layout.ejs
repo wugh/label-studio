@@ -72,7 +72,7 @@
       <%- partial('partials/header') %>
 
       <div id="main" <%- !isBlog ? 'class="fix-sidebar"': '' %>>
-        <% if (page.type === "playground") { %>
+        <% if (page.type === "templates") { %>
           <%- partial('partials/wizard/index') %>
         <% } else { %>
           <%- body %>
