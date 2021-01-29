@@ -5,7 +5,13 @@
   <link rel="stylesheet" href="static/css/users.css">
 
   <div id="users">
-    <table>
+    <div v-if="!users">
+      Loading users...
+    </div>
+    <div v-if="users && !users.length">
+      No users found :(
+    </div>
+    <table v-if="users && users.length">
       <thead>
         <tr>
           <th v-for="field in fields">{{render_header(field.name)}}</th>
@@ -31,9 +37,9 @@
         <a :href="'tel:'+selected.phone">{{selected.phone}}</a>
       </div>
       <button class="danger">Revoke Access and Deactivate...</button>
-      <p class="no-projects" v-if="!selected.projects">Loading projects...</p>
-      <p class="no-projects" v-if="selected.projects && selected.projects.length === 0">No projects for this user</p>
-      <table class="user-projects" v-if="selected.projects && selected.projects.length">
+      <p class="no-projects" v-if="!projects">Loading projects...</p>
+      <p class="no-projects" v-if="projects && projects.length === 0">No projects for this user</p>
+      <table class="user-projects" v-if="projects && projects.length">
         <thead>
           <tr>
             <th>Project</th>
@@ -44,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="project in selected.projects">
+          <tr v-for="project in projects">
             <td>{{project.name}}</td>
             <td>{{project.completed}}</td>
             <td>{{project.assigned}}</td>
@@ -95,17 +101,31 @@ const users = new Vue({
       { name: 'name', title: 'Name' },
       { name: 'last_active', title: 'Last Activity' },
     ],
-    users: [
-      { id: 2, name: 'Katharina Raichstein', email: 'katharina@ibm.com', role: 'owner' },
-      { id: 11, name: 'Robert', email: 'bob@heartex.com', role: 'collaborator', last_active: '2 hours ago' },
-      { id: 5, name: 'Denis', email: 'denis@heartex.com', role: 'manager', userpic: '/static/images/opossum_looking.png' },
-      { id: 3, name: 'Dmitry Zaulichny', email: 'dmitry@heartex.ai', role: 'admin' },
-      { id: 7, email: 'sarah@heartex.ai', role: 'collaborator' },
-    ],
+    projects: null,
+    users: null,
   }),
   methods: {
     select(user) {
       this.selected = this.selected === user ? null : user
+      this.projects = user && user.projects
+      if (user && !user.projects) {
+        this.loadUser(user.id)
+      }
+    },
+    //// api
+    loadUsers() {
+      return API.users.getAll()
+        .then(users => this.users = users || [])
+        .catch(() => {}) // @todo deal with errors
+    },
+    loadUser(id) {
+      return API.users.getOne(id)
+        .then(data => {
+          const user = this.users.find(u => u.id === id)
+          user.projects = data.projects
+          this.projects = data.projects
+        })
+        .catch(() => {}) // @todo deal with errors
     },
     //// columns
     render_header(field_id) {
@@ -136,7 +156,10 @@ const users = new Vue({
         return (user.name || "").replace(/\b(.)\w+(?:\s+|$)/g, "$1")
       }
     }
-  }
+  },
+  mounted: function () {
+    this.loadUsers()
+  },
 })
 </script>
 {% endraw %}

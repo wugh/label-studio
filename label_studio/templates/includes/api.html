@@ -1,0 +1,40 @@
+<script>
+  // @todo this is mock data, remove
+const MOCK = {
+  users: [
+    { id: 2, name: 'Katharina Raichstein', email: 'katharina@ibm.com', role: 'owner' },
+    { id: 11, name: 'Robert', email: 'bob@heartex.com', role: 'collaborator', last_active: '2 hours ago' },
+    { id: 5, name: 'Denis', email: 'denis@heartex.com', role: 'manager', userpic: '/static/images/opossum_looking.png' },
+    { id: 3, name: 'Dmitry Zaulichny', email: 'dmitry@heartex.ai', role: 'admin' },
+    { id: 7, email: 'sarah@heartex.ai', role: 'collaborator' },
+  ],
+  user: {
+    id: 5,
+    name: 'Denis',
+    email: 'denis@heartex.com',
+    role: 'manager',
+    userpic: '/static/images/opossum_looking.png',
+    projects: [
+      { id: 5, name: 'Where is Waldo', lead_time: 9 },
+      { id: 2, name: 'Pokemon or Big Data', completed: 123, lead_time: 2.3 },
+    ],
+  },
+}
+
+const API = {
+  users: {
+    getAll() {
+      // return fetch("/api/users")
+      //   .then(data => data.json())
+      //   .then(data => data.users)
+      return Promise.resolve(MOCK.users)
+    },
+    getOne(id) {
+      // return fetch("/api/users/" + id)
+      //   .then(data => data.json())
+      //   .then(data => data.user)
+      return Promise.resolve(MOCK.user)
+    },
+  }
+}
+</script>
