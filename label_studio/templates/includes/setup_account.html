@@ -1,0 +1,47 @@
+<div class="ui tab" data-tab="data-account">
+{% raw %}
+  <script src="static/js/polyfill.min.js"></script>
+  <script src="static/js/vue.js"></script>
+  <script src="static/js/mousetrap.min.js"></script>
+
+  <link rel="stylesheet" href="static/css/users.css">
+
+  <div class="account-page">
+    <form action="">
+      <header>Account info</header>
+      <ul>
+        <li class="field">
+          <label for="">E-mail</label>
+          <input type="text" value="hlomzik@heartex.com" disabled />
+        </li>
+        <li class="field">
+          <label for="">Name</label>
+          <input type="text" value="Andrey Kholmanyuk" />
+        </li>
+        <li class="field">
+          <label for="">Phone</label>
+          <input type="text" value="+7 967 127 1643" />
+          <span>We'll send you sms with code if you change your number</span>
+          <span class="error">Incorrect phone number!</span>
+        </li>
+      </ul>
+      <div class="user-some-actions">
+        <div class="user-pic">
+          <img src="/static/images/opossum_looking.png" alt="User photo" width="92" />
+          <input type="button" value="Choose new..." />
+          <input type="button" value="Delete" class="danger" />
+        </div>
+        <div class="user-activity">
+          <p>Inspect all your actions<br/>performed on the platform</p>
+          <button type="button">Activity Log<img src="" /></button>
+        </div>
+      </div>
+      <footer>
+        <p class="secondary">Registered Jan 12 2021 at 7:13 AM</p>
+        <button disabled>Save</button>
+      </footer>
+    </form>
+
+  </div>
+{% endraw %}
+</div>

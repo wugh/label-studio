@@ -1,0 +1,143 @@
+<div class="ui tab active" data-tab="data-users">
+{% raw %}
+  <script src="static/js/vue.js"></script>
+
+  <link rel="stylesheet" href="static/css/users.css">
+
+  <div id="users">
+    <table>
+      <thead>
+        <tr>
+          <th v-for="field in fields">{{render_header(field.name)}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="user in users" @click="select(user)" :class="{ active: selected === user }">
+          <td v-for="field in fields">
+            <span v-if="field.type === 'image'" v-html="render_field(field.name, user)"></span>
+            <span v-if="field.type !== 'image'">{{render_field(field.name, user)}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-if="selected" class="user-info">
+      <div class="userpic">
+        <img :src="selected.userpic" alt="" width="64">
+        <h2>{{selected.name}}</h2>
+        <p>{{selected.email}}</p>
+      </div>
+      <div class="phone" v-if="selected.phone">
+        <header>Phone Number</header>
+        <a :href="'tel:'+selected.phone">{{selected.phone}}</a>
+      </div>
+      <button class="danger">Revoke Access and Deactivate...</button>
+      <p class="no-projects" v-if="!selected.projects">Loading projects...</p>
+      <p class="no-projects" v-if="selected.projects && selected.projects.length === 0">No projects for this user</p>
+      <table class="user-projects" v-if="selected.projects && selected.projects.length">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Finished Items</th>
+            <th>Assigned Items</th>
+            <th>Ground Truth</th>
+            <th>Mean Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="project in selected.projects">
+            <td>{{project.name}}</td>
+            <td>{{project.completed}}</td>
+            <td>{{project.assigned}}</td>
+            <td>{{project.ground_truth}}</td>
+            <td>{{project.lead_time}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="last-active" v-if="selected.last_active">Last active {{selected.last_active}}</p>
+    </div>
+    <div v-if="!selected" class="roles-details">
+      <details>
+        <summary>
+          <p>Members have different access levels to projects and team management.
+            Collaborators can perform only labeling tasks. Each of the members can label.</p>
+          
+        </summary>
+        <ul>
+          <li>
+            <header>Owner</header>
+            <div class="access">Full Access</div>
+            <p>Alter team, create and change projects, activity log.</p>
+          </li>
+          <li>
+            <header>Owner</header>
+            <div class="access">Full Access</div>
+            <p>Alter team, full access to any projects, activity log.
+              Can't see team owner's account page.</p>
+          </li>
+          <li>
+            <header>Manager</header>
+            <div class="access">Limited Access</div>
+            <p>View any projects, full access to own projects.</p>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+<script>
+const users = new Vue({
+  el: '#users',
+  data: () => ({
+    selected: null,
+    fields: [
+      { name: 'userpic', type: 'image' },
+      { name: 'email', title: 'E-mail' },
+      { name: 'name', title: 'Name' },
+      { name: 'last_active', title: 'Last Activity' },
+    ],
+    users: [
+      { id: 2, name: 'Katharina Raichstein', email: 'katharina@ibm.com', role: 'owner' },
+      { id: 11, name: 'Robert', email: 'bob@heartex.com', role: 'collaborator', last_active: '2 hours ago' },
+      { id: 5, name: 'Denis', email: 'denis@heartex.com', role: 'manager', userpic: '/static/images/opossum_looking.png' },
+      { id: 3, name: 'Dmitry Zaulichny', email: 'dmitry@heartex.ai', role: 'admin' },
+      { id: 7, email: 'sarah@heartex.ai', role: 'collaborator' },
+    ],
+  }),
+  methods: {
+    select(user) {
+      this.selected = this.selected === user ? null : user
+    },
+    //// columns
+    render_header(field_id) {
+      const method = "field_" + field_id + "_header"
+      console.log({ method, fields: this.fields })
+      if (this[method]) {
+        return this[method]()
+      } else {
+        const field = this.fields.find(f => f.name === field_id)
+        return field ? field.title : ''
+      }
+    },
+    render_field(field, user) {
+      const method = "field_" + field + "_render"
+      if (this[method]) {
+        return this[method](user)
+      } else {
+        return user[field]
+      }
+    },
+    field_role_render(user) {
+      return user.role[0].toUpperCase() + user.role.substr(1)
+    },
+    field_userpic_render(user) {
+      if (user.userpic) {
+        return '<img src="' + user.userpic + '" width="28" />'
+      } else {
+        return (user.name || "").replace(/\b(.)\w+(?:\s+|$)/g, "$1")
+      }
+    }
+  }
+})
+</script>
+{% endraw %}
+</div>

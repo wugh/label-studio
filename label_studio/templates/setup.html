@@ -44,14 +44,18 @@
 <div class="ui container">
   <div class="ui max-width-wrapper">
     <div class="ui secondary menu stackable">
-      <a class="item active" data-tab="labeling-config">Labeling config</a>
+      <a class="item" data-tab="labeling-config">Labeling config</a>
       <a class="item" data-tab="project-settings">Project settings</a>
       <a class="item" data-tab="data-settings">Cloud storage sync</a>
+      <a class="item active" data-tab="data-users">Users</a>
+      <a class="item" data-tab="data-account">Account</a>
     </div>
 
     {% include 'includes/setup_config.html' %}
     {% include "includes/setup_project.html" %}
     {% include "includes/setup_data.html" %}
+    {% include "includes/setup_users.html" %}
+    {% include "includes/setup_account.html" %}
   </div>
 </div>
 
