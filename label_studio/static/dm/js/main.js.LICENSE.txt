@@ -51,6 +51,16 @@ and limitations under the License.
  *  Released under the MIT license
  */
 
+/**
+ * Less - Leaner CSS v3.12.2
+ * http://lesscss.org
+ * 
+ * Copyright (c) 2009-2020, Alexis Sellier <self@cloudhead.net>
+ * Licensed under the Apache-2.0 License.
+ *
+ * @license Apache-2.0
+ */
+
 /** @license React v0.19.1
  * scheduler.production.min.js
  *
