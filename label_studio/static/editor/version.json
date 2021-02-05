@@ -1,6 +1,6 @@
 {
-  "message": "shift+space to play, ctrl+b to 1 sec back in Audio",
-  "commit": "b5094ee2f3cedc42b9472cf70036cc5e98de3386",
+  "message": "Improve audio transcription a bit",
+  "commit": "aac5018b097275ba83202f78f14283ccc30cc746",
   "branch": "feature/audio-transcription",
-  "date": "2021-02-02T01:35:06Z"
+  "date": "2021-02-05T15:53:02Z"
 }
